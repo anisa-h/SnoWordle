@@ -6,7 +6,7 @@ var row = 0;
 var col = 0; 
 
 var gameOver = false; 
-var word = "Rhino"; //the word to guess
+var word = "Loser"; //the word to guess
 
 
 window.onload = function() {
@@ -62,6 +62,19 @@ function intialize() {
 
 function update() {
     let correct = 0;
+    let letterCount = {}; //to count the recurrency of letters in the word
+    letter = word[i].toLowerCase();
+    for (let i = 0; i < word.length; i++) {
+        let letter = word[i].toLowerCase();
+        if (letterCount[letter]) {
+            letterCount[letter] += 1;
+        } else {
+            letterCount[letter] = 1;
+        }
+    }
+
+
+//first loop to check for correct letters    
     for (let c =0; c< width; c++) {
         let currentTile = document.getElementById(row.toString() + "-" + c.toString());
         let letter = currentTile.innerText;
@@ -69,16 +82,27 @@ function update() {
         if (word[c].toLowerCase() == letter.toLowerCase()) { //if letter is correct
             currentTile.classList.add("correct");
             correct += 1;
+            letterCount[letter.toLowerCase()] -= 1; //decrease the count of the letter
         }
-        else if (word.toLowerCase().includes(letter.toLowerCase())) { //if letter is in the word but not in the correct position
-            currentTile.classList.add("present");
+             if (correct == width) { //if all letters are correct
+                gameOver = true; 
+                document.getElementById("Answer").innerText = "You win! The word was: " + word;
         }
-        else { //if letter is not in the word
-            currentTile.classList.add("absent");    
         }
-        if (correct == width) { //if all letters are correct
-            gameOver = true; 
-            document.getElementById("Answer").innerText = "You win! The word was: " + word;
-        }
+       
+        //CHECK FOR DUPLICATE LETTERS
+        for (let c =0; c< width; c++) {
+        let currentTile = document.getElementById(row.toString() + "-" + c.toString());
+        let letter = currentTile.innerText;
+
+            if (!currentTile.classList.contains("correct")) { //if letter is not correct
+                if (word.toLowerCase().includes(letter.toLowerCase())&&letterCount[letter]>0) { //if letter is in the word but not in the correct position
+                    currentTile.classList.add("present");
+                    letterCount[letter.toLowerCase()] -= 1; //decrease the count of the letter
+                }
+                else { //if letter is not in the word
+                    currentTile.classList.add("absent");    
+                }
+         }
     }
 }
