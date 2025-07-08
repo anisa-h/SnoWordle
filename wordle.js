@@ -6,7 +6,7 @@ var row = 0;
 var col = 0; 
 
 var gameOver = false; 
-var word = "Loser"; //the word to guess
+var word = "anisa"; //the word to guess
 
 
 window.onload = function() {
@@ -22,7 +22,7 @@ function intialize() {
             let tile = document.createElement("span");
             tile.id = r.toString() + "-" + c.toString();
             tile.classList.add("tile");
-            tile. innerText = "";
+            tile.innerText = "";  
             document.getElementById("Board").appendChild(tile);
         }
     }
@@ -33,49 +33,55 @@ function intialize() {
         if ("KeyA" <= e.code && e.code <= "KeyZ") {
             if (col < width) {
                 let currentTile = document.getElementById(row.toString() + "-" + col.toString());
-                if (currentTile,innerText == "") {
+                if (currentTile.innerText == "") {
                     currentTile.innerText = e.code[3];
                     col += 1;
                                 }
-                
-            }
-            else if (e.code == "Backspace") {
-                col -= 1;
+                            }
         }
-        let currentTile = document.getElementById(row.toString() + "-" + col.toString());
-        currentTile.innerText = "";
+    
+        else if (e.code == "Backspace") {
+            if (0 < col && col <= width) {   
+            col -= 1;
+        }    
+
+            let currentTile = document.getElementById(row.toString() + "-" + col.toString());
+            currentTile.innerText = "";
         }
-        
+    
         else if (e.code == "Enter") {
             update();
-            row += 1;
-            col = 0; 
+            row += 1; //start new row 
+            col = 0;  // restart to first letter
         }
 
         if (!gameOver && row == height) {
             gameOver = true; 
             document.getElementById("Answer").innerText = "The word was: " + word;
         }
+    
     })
     
 }   
 
 function update() {
-    let correct = 0;
-    let letterCount = {}; //to count the recurrency of letters in the word
-    letter = word[i].toLowerCase();
+    let correct = 0; 
+    let letterCount = {}; //anisa -> {a: 2, n: 1, i: 1, s: 1}
     for (let i = 0; i < word.length; i++) {
-        let letter = word[i].toLowerCase();
+        letter = word[i].toLowerCase();
         if (letterCount[letter]) {
-            letterCount[letter] += 1;
-        } else {
-            letterCount[letter] = 1;
+            letterCount[letter] += 1; 
+        }
+        else{
+            letterCount[letter] = 1; 
         }
     }
-
+        // let currentTile = document.getElementById(row.toString() + "-" + c.toString());
+        // let letter = currentTile.innerText;
+    
 
 //first loop to check for correct letters    
-    for (let c =0; c< width; c++) {
+    for (let c = 0; c< width; c++) {
         let currentTile = document.getElementById(row.toString() + "-" + c.toString());
         let letter = currentTile.innerText;
 
@@ -86,17 +92,17 @@ function update() {
         }
              if (correct == width) { //if all letters are correct
                 gameOver = true; 
-                document.getElementById("Answer").innerText = "You win! The word was: " + word;
+                document.getElementById("Answer").innerText = "You win! The word was: " + word.toUpperCase();
         }
         }
        
-        //CHECK FOR DUPLICATE LETTERS
-        for (let c =0; c< width; c++) {
+        //CHECK IT TWICE! FOR DUPLICATE LETTERS
+        for (let c = 0; c< width; c++) {
         let currentTile = document.getElementById(row.toString() + "-" + c.toString());
         let letter = currentTile.innerText;
 
-            if (!currentTile.classList.contains("correct")) { //if letter is not correct
-                if (word.toLowerCase().includes(letter.toLowerCase())&&letterCount[letter]>0) { //if letter is in the word but not in the correct position
+            if (!currentTile.classList.contains("correct")) { 
+                if (word.toLowerCase().includes(letter.toLowerCase())&&letterCount[letter] > 0) { //if letter is in the word but not in the correct position
                     currentTile.classList.add("present");
                     letterCount[letter.toLowerCase()] -= 1; //decrease the count of the letter
                 }
