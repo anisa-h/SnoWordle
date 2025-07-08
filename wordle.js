@@ -86,7 +86,7 @@ function update() {
     
 
 //first loop to check for correct letters    
-    for (let c = 0; c< width; c++) {
+    for (let c = 0; c < width; c++) {
         let currentTile = document.getElementById(row.toString() + "-" + c.toString());
         let letter = currentTile.innerText;
 
