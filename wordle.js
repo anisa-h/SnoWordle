@@ -1,114 +1,195 @@
 
 var height = 6; //number of guesses
-var width = 5; //length of word
+var width = 5; //length of the word
 
-var row = 0; 
-var col = 0; 
+var row = 0; //current guess (attempt #)
+var col = 0; //current letter for that attempt
 
-var gameOver = false; 
-var word = "anisa"; //the word to guess
+var gameOver = false;
+ var word = "RHINO";
 
-
-window.onload = function() {
-    intialize(); 
+window.onload = function(){
+    intialize();
 }
+
 
 function intialize() {
 
-    //create the board
-    // loop of 30, to create 6 rows and 5 columns
+    // Create the game board
     for (let r = 0; r < height; r++) {
         for (let c = 0; c < width; c++) {
+            // <span id="0-0" class="tile">P</span>
             let tile = document.createElement("span");
             tile.id = r.toString() + "-" + c.toString();
             tile.classList.add("tile");
-            tile.innerText = "";  
-            document.getElementById("Board").appendChild(tile);
+            tile.innerText = "";
+            document.getElementById("board").appendChild(tile);
         }
     }
-    //key presses
+
+    // Create the key board
+    let keyboard = [
+        ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
+        ["A", "S", "D", "F", "G", "H", "J", "K", "L", " "],
+        ["Enter", "Z", "X", "C", "V", "B", "N", "M", "⌫" ]
+    ]
+
+    for (let i = 0; i < keyboard.length; i++) {
+        let currRow = keyboard[i];
+        let keyboardRow = document.createElement("div");
+        keyboardRow.classList.add("keyboard-row");
+
+        for (let j = 0; j < currRow.length; j++) {
+            let keyTile = document.createElement("div");
+
+            let key = currRow[j];
+            keyTile.innerText = key;
+            if (key == "Enter") {
+                keyTile.id = "Enter";
+            }
+            else if (key == "⌫") {
+                keyTile.id = "Backspace";
+            }
+            else if ("A" <= key && key <= "Z") {
+                keyTile.id = "Key" + key; // "Key" + "A";
+            } 
+
+            keyTile.addEventListener("click", processKey);
+
+            if (key == "Enter") {
+                keyTile.classList.add("enter-key-tile");
+            } else {
+                keyTile.classList.add("key-tile");
+            }
+            keyboardRow.appendChild(keyTile);
+        }
+        document.body.appendChild(keyboardRow);
+    }
+    
+
+    // Listen for Key Press
     document.addEventListener("keyup", (e) => {
-        if (gameOver) return; //if game is over, do nothing
-
-        if ("KeyA" <= e.code && e.code <= "KeyZ") {
-            if (col < width) {
-                let currentTile = document.getElementById(row.toString() + "-" + col.toString());
-                if (currentTile.innerText == "") {
-                    currentTile.innerText = e.code[3];
-                    col += 1;
-                                }
-                            }
-        }
-    
-        else if (e.code == "Backspace") {
-            if (0 < col && col <= width) {   
-            col -= 1;
-        }    
-
-            let currentTile = document.getElementById(row.toString() + "-" + col.toString());
-            currentTile.innerText = "";
-        }
-    
-        else if (e.code == "Enter") {
-            update();
-            row += 1; //start new row 
-            col = 0;  // restart to first letter
-        }
-
-        if (!gameOver && row == height) {
-            gameOver = true; 
-            document.getElementById("Answer").innerText = "The word was: " + word;
-        }
-    
+        processInput(e);
     })
-    
-}   
+}
+
+function processKey() {
+    e = { "code" : this.id };
+    processInput(e);
+}
+
+function processInput(e) {
+    if (gameOver) return; 
+
+    // alert(e.code);
+    if ("KeyA" <= e.code && e.code <= "KeyZ") {
+        if (col < width) {
+            let currTile = document.getElementById(row.toString() + '-' + col.toString());
+            if (currTile.innerText == "") {
+                currTile.innerText = e.code[3];
+                col += 1;
+            }
+        }
+    }
+    else if (e.code == "Backspace") {
+        if (0 < col && col <= width) {
+            col -=1;
+        }
+        let currTile = document.getElementById(row.toString() + '-' + col.toString());
+        currTile.innerText = "";
+    }
+
+    else if (e.code == "Enter") {
+        update();
+        row += 1; //start new row
+        col = 0; //start at 0 for new row
+    }
+
+
+    if (!gameOver && row == height) {
+        gameOver = true;
+        document.getElementById("answer").innerText = word;
+    }
+}
 
 function update() {
-    let correct = 0; 
-    let letterCount = {}; //anisa -> {a: 2, n: 1, i: 1, s: 1}
-    for (let i = 0; i < word.length; i++) {
-        letter = word[i].toLowerCase();
-        if (letterCount[letter]) {
-            letterCount[letter] += 1; 
-        }
-        else{
-            letterCount[letter] = 1; 
-        }
-    }
-        // let currentTile = document.getElementById(row.toString() + "-" + c.toString());
-        // let letter = currentTile.innerText;
-    
+    let guess = "";
+    document.getElementById("answer").innerText = "";
 
-//first loop to check for correct letters    
+    //string up the guesses into the word
     for (let c = 0; c < width; c++) {
-        let currentTile = document.getElementById(row.toString() + "-" + c.toString());
-        let letter = currentTile.innerText;
-
-        if (word[c].toLowerCase() == letter.toLowerCase()) { //if letter is correct
-            currentTile.classList.add("correct");
-            correct += 1;
-            letterCount[letter.toLowerCase()] -= 1; //decrease the count of the letter
-        }
-             if (correct == width) { //if all letters are correct
-                gameOver = true; 
-                document.getElementById("Answer").innerText = "You win! The word was: " + word.toUpperCase();
-        }
-        }
-       
-        //CHECK IT TWICE! FOR DUPLICATE LETTERS
-        for (let c = 0; c < width; c++) {
-        let currentTile = document.getElementById(row.toString() + "-" + c.toString());
-        let letter = currentTile.innerText;
-
-            if (!currentTile.classList.contains("correct")) { 
-                if (word.toLowerCase().includes(letter.toLowerCase())&&letterCount[letter] > 0) { //if letter is in the word but not in the correct position
-                    currentTile.classList.add("present");
-                    letterCount[letter.toLowerCase()] -= 1; //decrease the count of the letter
-                }
-                else { //if letter is not in the word
-                    currentTile.classList.add("absent");    
-                }
-         }
+        let currTile = document.getElementById(row.toString() + '-' + c.toString());
+        let letter = currTile.innerText;
+        guess += letter;
     }
+
+   
+    //start processing guess
+    let correct = 0;
+
+    let letterCount = {}; //keep track of letter frequency, ex) ANISA -> {A:2, I:1, N:1, S:1}
+    for (let i = 0; i < word.length; i++) {
+        let letter = word[i];
+
+        if (letterCount[letter]) {
+           letterCount[letter] += 1;
+        } 
+        else {
+           letterCount[letter] = 1;
+        }
+    }
+
+    console.log(letterCount);
+
+    //first iteration, check all the correct ones first
+    for (let c = 0; c < width; c++) {
+        let currTile = document.getElementById(row.toString() + '-' + c.toString());
+        let letter = currTile.innerText;
+
+        //Is it in the correct position?
+        if (word[c] == letter) {
+            currTile.classList.add("correct");
+
+            let keyTile = document.getElementById("Key" + letter);
+            keyTile.classList.remove("present");
+            keyTile.classList.add("correct");
+
+            correct += 1;
+            letterCount[letter] -= 1; //deduct the letter count
+        }
+
+        if (correct == width) {
+            gameOver = true;
+            document.getElementById("answer").innerText = `You win! The word was: ${word.toUpperCase()}`;
+        }
+    }
+
+    console.log(letterCount);
+    //go again and mark which ones are present but in wrong position
+    for (let c = 0; c < width; c++) {
+        let currTile = document.getElementById(row.toString() + '-' + c.toString());
+        let letter = currTile.innerText;
+
+        // skip the letter if it has been marked correct
+        if (!currTile.classList.contains("correct")) {
+            //Is it in the word?         //make sure we don't double count
+            if (word.includes(letter) && letterCount[letter] > 0) {
+                currTile.classList.add("present");
+                
+                let keyTile = document.getElementById("Key" + letter);
+                if (!keyTile.classList.contains("correct")) {
+                    keyTile.classList.add("present");
+                }
+                letterCount[letter] -= 1;
+            } // Not in the word or (was in word but letters all used up to avoid overcount)
+            else {
+                currTile.classList.add("absent");
+                let keyTile = document.getElementById("Key" + letter);
+                keyTile.classList.add("absent")
+            }
+        }
+    }
+
+    // row += 1; //start new row
+    // col = 0; //start at 0 for new row
 }

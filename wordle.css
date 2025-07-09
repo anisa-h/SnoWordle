@@ -13,7 +13,7 @@ hr {
     letter-spacing: 2px;
 }
 
-#Board {
+#board {
     width: 350px;
     height: 420px;
     margin: 0 auto;
@@ -22,7 +22,7 @@ hr {
     flex-wrap: wrap;
 }
 
-.tile{
+.tile {
     /* the boxes of wordle */
     border: 2px lightgray solid;
     width: 60px;   
@@ -38,7 +38,7 @@ hr {
     align-items: center; 
 }
 
-.correct{
+.correct {
     /* the color of the letter if it is correct */
     background-color: #6aaa64;
     color: white;
@@ -56,3 +56,39 @@ hr {
     color: white;
     border-color: white;
 }   
+
+.keyboard-row {
+    width: 400px;
+
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.key-tile {
+    width: 36px;
+    height: 40px;
+    margin: 1px;
+    border: 1px solid lightgray;
+
+    /* Text */
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.enter-key-tile {
+    width: 76px;
+    height: 40px;
+    margin: 1px;
+    border: 1px solid lightgray;
+
+    /* Text */
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
