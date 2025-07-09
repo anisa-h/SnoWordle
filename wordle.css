@@ -2,16 +2,9 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
 }
-h3 {
-    margin: 2px;
-    font-style: italic;
-}
-h6 {
-    margin: 2px;
-}
 
 hr {
-    width: 200px;
+    width: 500px;
 }
 
 #title {
@@ -30,39 +23,39 @@ hr {
 }
 
 .tile {
-    /* the boxes of wordle */
-    border: 2px lightgray solid;
-    width: 60px;   
+    /* Box */
+    border: 2px solid lightgray;
+    width: 60px;
     height: 60px;
     margin: 2.5px;
 
-    /* the text inside each tile */
+    /* Text */
     color: black;
     font-size: 36px;
     font-weight: bold;
     display: flex;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
 }
 
 .correct {
-    /* the color of the letter if it is correct */
-    background-color: #6aaa64;
+    background-color: #6AAA64;
     color: white;
-    border-color: white;  
+    border-color: white;
 }
 
 .present {
-    background-color: #c9b458;
+    background-color: #C9B458;
     color: white;
     border-color: white;
 }
 
 .absent {
-    background-color: #787c7e;
+    background-color: #787C7E;
     color: white;
-    border-color: white;
-}   
+    border-color:white;
+}
+
 
 .keyboard-row {
     width: 400px;
