@@ -19,18 +19,7 @@ guessList = guessList.concat(wordList);
 // function myFunction() {
 //     document.getElementById("front-page").innerText = "YOU CLICKED ME!";
 // }
-function OpenGame() {
-            document.getElementById('front-page').style.display = 'none';
-            document.getElementById('board').style.display = '';
-            document.getElementById('answer').style.display = '';
-            document.getElementById('keyboard-row').style.display = '';
-           document.getElementById('welcome').style.display = 'none';
-           document.getElementById('instructions').style.display = 'none';
-           document.getElementById('PermInstructions').style.display = '';
 
-
-
-            }
 
 
 window.onload = function(){
@@ -65,7 +54,7 @@ function intialize() {
     let keyboardContainer = document.createElement("div");
     keyboardContainer.id = "keyboard-row";
     keyboardContainer.classList.add("keyboard-row");
-    keyboardContainer.style.display = "none";
+    keyboardContainer.style.display = "block";
 
     for (let i = 0; i < keyboard.length; i++) {
         let currRow = keyboard[i];
@@ -116,7 +105,6 @@ function processKey() {
 function processInput(e) {
     if (gameOver) return; 
 
-    // alert(e.code);
     if ("KeyA" <= e.code && e.code <= "KeyZ") {
         if (col < width) {
             let currTile = document.getElementById(row.toString() + '-' + col.toString());
@@ -223,20 +211,24 @@ function update() {
         for (let i = 0; i < window.guessResults.length; i++) {
             let rowArr = window.guessResults[i];
             let rowDiv = document.createElement("div");
-            rowDiv.style.display = "flex";
-            rowDiv.style.marginBottom = "2px";
             for (let j = 0; j < rowArr.length; j++) {
+                // Map color to emoji unicode
                 let color = rowArr[j];
-                let box = document.createElement("div");
-                box.style.width = "24px";
-                box.style.height = "24px";
-                box.style.margin = "1px";
-                box.style.borderRadius = "4px";
-                // Set background color based on result
-                if (color === "green") box.style.background = "#6aaa64";
-                else if (color === "yellow") box.style.background = "#c9b458";
-                else box.style.background = "#787c7e";
-                rowDiv.appendChild(box);
+                let emoji;
+                if (color === "green") emoji = "🟩"; // unicode
+                else if (color === "yellow") emoji = "🟨"; // unicode
+                else emoji = "⬛"; // unicode
+
+                let emojiBox = document.createElement("span");
+                emojiBox.innerText = emoji;
+                emojiBox.style.fontSize = "2em";
+                emojiBox.style.margin = "2px";
+                rowDiv.appendChild(emojiBox);
+                let colorBox = document.createElement("div");
+                
+                // if (color === "green") colorBox.style.background = "#6aaa64";
+                // else if (color === "yellow") colorBox.style.background = "#c9b458";
+                // else colorBox.style.background = "#787c7e";
             }
             resultsDiv.appendChild(rowDiv);
         }

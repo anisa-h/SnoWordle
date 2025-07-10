@@ -116,18 +116,6 @@ hr {
     align-items: center;
 }
 
-.grey {
-    color:#787C7E;
-}
-
-.green {
-    color:#6AAA64;
-}
-
-.yellow {
-    color: #C9B458;
-}
-
 .result-box {
     width: 24px;
     height: 24px;
@@ -136,14 +124,33 @@ hr {
     display: inline-block;
 }
 
-.result-box.green {
+#results-share {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    margin-top: 20px;
+}
+
+.result-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2px;
+}
+
+.results-box {
+    width: 24px;
+    height: 24px;
+    margin: 1px;
+    border-radius: 4px;
+    display: inline-block;
+}
+.results-box.green {
     background: #6aaa64;
 }
-
-.result-box.yellow {
+.results-box.yellow {
     background: #c9b458;
 }
-
-.result-box.grey {
+.results-box.grey {
     background: #787c7e;
 }
