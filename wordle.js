@@ -158,7 +158,7 @@ function update() {
     }
 
     guess = guess.toLowerCase(); //case sensitive
-    console.log(guess);
+    //console.log(guess);
 
     if (!guessList.includes(guess)) {
         document.getElementById("answer").innerText = "Not in word list";
@@ -180,15 +180,16 @@ function update() {
         }
     }
 
-    console.log(letterCount);
+    //console.log(letterCount);
 
-    // Array to store the results for each row Z Y X for grey (Absent), Yellow (Present), Green (Correct)
+    // let correctGreen = ["green", "green", "green", "green",];
+
     if (!window.guessResults) {
         window.guessResults = [];
     }
 
     //first iteration, check all the correct ones first
-    let rowResult = Array(width).fill("z"); // Default to grey (z)
+    let rowResult = Array(width).fill("grey"); // Default to grey
     for (let c = 0; c < width; c++) {
         let currTile = document.getElementById(row.toString() + '-' + c.toString());
         let letter = currTile.innerText;
@@ -203,16 +204,21 @@ function update() {
 
             correct += 1;
             letterCount[letter] -= 1; //deduct the letter count
-            rowResult[c] = "x"; // green
+            rowResult[c] = "green"; // green
         }
 
         if (correct == width) {
-            document.getElementById("answer").innerText = "You win!";
+            document.getElementById("answer").innerText = "You win!"; 
+            console.log(window.guessResults);
+             for(let i = 0; i < window.guessResults.length ; i++){
+               console.log("row", i, ":", window.guessResults[i]);
+             }
             gameOver = true;
+            
         }
     }
 
-    console.log(letterCount);
+    //console.log(letterCount);
     //go again and mark which ones are present but in wrong position
     for (let c = 0; c < width; c++) {
         let currTile = document.getElementById(row.toString() + '-' + c.toString());
@@ -229,23 +235,22 @@ function update() {
                     keyTile.classList.add("present");
                 }
                 letterCount[letter] -= 1;
-                rowResult[c] = "y"; // yellow
+                rowResult[c] = "yellow"; // yellow
             } // Not in the word or (was in word but letters all used up to avoid overcount)
             else {
                 currTile.classList.add("absent");
                 let keyTile = document.getElementById("Key" + letter);
                 keyTile.classList.add("absent")
-                rowResult[c] = "z"; // grey
+                rowResult[c] = "grey"; // grey
             }
         }
-        
+
     }
 
     // Store the result for this row
     window.guessResults.push(rowResult);
-    console.log("Row results:", rowResult);
-    console.log("All guess results:", window.guessResults);
-
+    //console.log("Row results:", rowResult);
+    //console.log("All guess results:", window.guessResults);
     row += 1; //start new row
     col = 0; //start at 0 for new row
 }

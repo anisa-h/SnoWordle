@@ -4,7 +4,11 @@ body {
 }
 
 hr {
-    width: 500px;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    display: block;
+    box-sizing: border-box;
 }
 
 #title {
@@ -30,7 +34,6 @@ hr {
     font-size: 20px;
     margin: 20px;
     text-align: center;
-    
 }
 
 #board {
@@ -111,4 +114,36 @@ hr {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.grey {
+    color:#787C7E;
+}
+
+.green {
+    color:#6AAA64;
+}
+
+.yellow {
+    color: #C9B458;
+}
+
+.result-box {
+    width: 24px;
+    height: 24px;
+    margin: 1px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.result-box.green {
+    background: #6aaa64;
+}
+
+.result-box.yellow {
+    background: #c9b458;
+}
+
+.result-box.grey {
+    background: #787c7e;
 }
