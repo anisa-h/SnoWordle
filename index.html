@@ -7,21 +7,29 @@
 
         <link rel="stylesheet" href="wordle.css">
         <script src="wordle.js"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
     </head>
 
      <body>
         <br> 
-        <h1 id="title">Snohetta's Wordle</h1>
+        <h1 id="title" class="dm-serif-display-regular">Snohetta's Wordle</h1>
             <hr>
-            <p id="PermenantInstructions">Snohetta Theme Words...Start typing to play</p>
+            <p id="PermenantInstructions" class="nunito-uniquifier">Snohetta Theme Words...Start typing to play</p>
             <br>
         <div id="StartScreen">
-            
-            <button id="front-page" type="button" class="button" onclick="OpenGame()">Play</button>
+            <button id="front-page" type="button" class="button nunito-uniquifier" onclick="OpenGame()">Play</button>
+        </div>
+        <script>
+        function OpenGame() {
+            document.getElementById('StartScreen').style.display = 'none';
+            document.getElementById('Game').style.display = 'block';
+        }
+        </script>
         </div>
 
-
-        <div id="Game" style="display:none;">
+         <div id="Game" style="display:none;">
             <div id="board">
             </div>
              <div id="result" style="display:none;"></div>
@@ -31,22 +39,16 @@
             <br>
             
         </div>
-
-        <div id="AutoShareResults">
-        <div class="popup">
+                <h1 id="answer"></h1>
+    </div>
+<!-- share button -->
+<div id="ShareResults" style="display:none;">
+    <button id="showShareBtn">Click me to share results</button>
+    <div class="popup" id="popup" style="display:none;">
+        <div class="sharepopup">
             <h2>Share</h2>
             <button id="shareBtn">Share</button>
-            <div id="copiedMsg" style="display:none; color:green; margin-top:1em;">Copied!</div>
-        </div>
     </div>
-        <h1 id="answer"></h1>
 
+</div>
 
-
-    </body>
-        
-       
-
-    </body>
-
-</html>

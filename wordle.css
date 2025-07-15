@@ -1,6 +1,15 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
+    background-color: #d3ece7;
+}
+
+
+.nunito-uniquifier {
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
 }
 
 hr {
@@ -9,13 +18,27 @@ hr {
     margin: 0 auto;
     display: block;
     box-sizing: border-box;
+    color: rgb(50, 48, 48);
 }
 
 #title {
     font-size: 36px;
     font-weight: bold;
-    letter-spacing: 2px;
+    letter-spacing: 2px
 }
+
+.dm-serif-display-regular {
+  font-family: "DM Serif Display", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.dm-serif-display-regular-italic {
+  font-family: "DM Serif Display", serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
 
 .button {
   border: none;
@@ -51,7 +74,7 @@ hr {
 
 .tile {
     /* Box */
-    border: 2px solid lightgray;
+    border: 2px solid rgb(67, 64, 64);
     width: 60px;
     height: 60px;
     margin: 2.5px;
@@ -68,19 +91,19 @@ hr {
 .correct {
     background-color: #6AAA64;
     color: white;
-    border-color: white;
+    border-color: rgb(67, 64, 64);
 }
 
 .present {
     background-color: #C9B458;
     color: white;
-    border-color: white;
+    border-color: rgb(67, 64, 64);
 }
 
 .absent {
     background-color: #787C7E;
     color: white;
-    border-color:white;
+    border-color:rgb(67, 64, 64);
 }
 
 
@@ -96,7 +119,7 @@ hr {
     width: 36px;
     height: 40px;
     margin: 1px;
-    border: 1px solid lightgray;
+    border: 1px solid rgb(67, 64, 64);
 
     /* Text */
     font-size: 20px;
@@ -110,7 +133,7 @@ hr {
     width: 76px;
     height: 40px;
     margin: 1px;
-    border: 1px solid lightgray;
+    border: 1px ridge rgb(67, 64, 64);
 
     /* Text */
     font-size: 20px;
@@ -158,25 +181,69 @@ hr {
 .results-box.grey {
     background: #787c7e;
 }
-
+#share-btn, #show-share-btn {
+    display: inline-block;
+    padding: 0.5em 1.5em;
+    font-size: 1.2em;
+    font-weight: bold;
+    border: none;
+    border-radius: 2.5em;
+    background: linear-gradient(90deg, #6AAA64 60%, #57b894 100%);
+    color: #fff;
+    box-shadow: 0 4px 18px rgba(106,170,100,0.15), 0 1.5px 6px rgba(106,170,100,0.10);
+    cursor: pointer;
+    margin: 1em 0;
+    letter-spacing: 1px;
+    transition: 0.2s, transform 0.1s, box-shadow 0.2s;
+}
+#share-btn:hover, #share-btn:focus {
+    background: linear-gradient(90deg, #57b894 60%, #6AAA64 100%);
+    transform: scale(1.06);
+    box-shadow: 0 8px 32px rgba(106,170,100,0.18), 0 2px 8px rgba(106,170,100,0.12);
+}
 .popup-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-        .popup {
-            background: #fff;
-            padding: 2em;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            text-align: center;
-        }
-        .popup button {
-            margin-top: 1em;
-            padding: 0.5em 1.5em;
-            font-size: 1em;
-        }
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.popup {
+    background: #fff;
+    padding: 2em 2.5em;
+    border-radius: 1em;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(106,170,100,0.12);
+    text-align: center;
+    min-width: 350px;
+    max-width: 90vw;
+    min-height: 200px;
+    font-size: 1.5em;
+    transition: box-shadow 0.2s;
+    margin: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+}
+
+.popup button {
+    margin-top: 1em;
+    padding: 0.5em 1.5em;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 2em;
+    background: linear-gradient(90deg, #6AAA64 60%, #57b894 100%);
+    color: #fff;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(106,170,100,0.10);
+    cursor: pointer;
+    transition: 0.2s, transform 0.1s;
+}
+.popup button:hover {
+    background: linear-gradient(90deg, #57b894 60%, #6AAA64 100%);
+    transform: scale(1.05);
+}

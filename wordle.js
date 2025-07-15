@@ -20,12 +20,10 @@ guessList = guessList.concat(wordList);
 //     document.getElementById("front-page").innerText = "YOU CLICKED ME!";
 // }
 
-
-
 function OpenGame() {
     document.getElementById('StartScreen').style.display = 'none';
     document.getElementById('Game').style.display = 'block';
-            }
+}
 
 window.onload = function(){
     intialize();
@@ -152,44 +150,95 @@ function processInput(e) {
             }
         };
         document.getElementById("answer").innerText = word  + " was the word!";
-
-                let resultsDiv = document.getElementById("results-share");
-        if (!resultsDiv) {
-            resultsDiv = document.createElement("div");
-            resultsDiv.id = "results-share";
-            resultsDiv.style.marginTop = "20px";
-            resultsDiv.style.display = "flex";
-            resultsDiv.style.flexDirection = "column";
-            resultsDiv.style.alignItems = "center";
-            document.body.appendChild(resultsDiv);
+               //share button 
+        let shareBtn = document.getElementById("show-share-btn");
+        if (!shareBtn) {
+            shareBtn = document.createElement("button");
+            shareBtn.id = "show-share-btn";
+            shareBtn.innerText = "Click me to share results";
+            shareBtn.className = "share-btn"; 
+            shareBtn.onclick = function () {
+                showSharePopup();
+            };
+            document.body.appendChild(shareBtn);
+        } else {
+            shareBtn.style.display = "block";
         }
-        resultsDiv.innerHTML = ""; // Clear previous results
+        }
+        //popup
+        function showSharePopup() {
+            let popup = document.getElementById("share-popup");
+            if (!popup) {
+                popup = document.createElement("div");
+                popup.id = "share-popup";
+                popup.classList.add("popup");
 
-        // Show all completed rows
-        for (let i = 0; i < window.guessResults.length; i++) {
-            let rowArr = window.guessResults[i];
-            let rowDiv = document.createElement("div");
-            for (let j = 0; j < rowArr.length; j++) {
-                // Map color to emoji unicode
-                let color = rowArr[j];
-                let emoji;
-                if (color === "green") emoji = "🟩"; // unicode
-                else if (color === "yellow") emoji = "🟨"; // unicode
-                else emoji = "⬛"; // unicode
+                // Emoji results container
+                let emojiDiv = document.createElement("div");
+                emojiDiv.id = "emoji-results";
+                emojiDiv.style.marginBottom = "16px";
+                emojiDiv.style.textAlign = "center";
+                // Fill emojiDiv with results
+                for (let i = 0; i < window.guessResults.length; i++) {
+                    let rowArr = window.guessResults[i];
+                    let rowSpan = document.createElement("div");
+                    for (let j = 0; j < rowArr.length; j++) {
+                        let color = rowArr[j];
+                        let emoji;
+                        if (color === "green") emoji = "🟩";
+                        else if (color === "yellow") emoji = "🟨";
+                        else emoji = "⬛";
+                        let emojiBox = document.createElement("span");
+                        emojiBox.innerText = emoji;
+                        emojiBox.style.fontSize = "2em";
+                        emojiBox.style.margin = "2px";
+                        rowSpan.appendChild(emojiBox);
+                    }
+                    emojiDiv.appendChild(rowSpan);
+                }
+                popup.appendChild(emojiDiv);
 
-                let emojiBox = document.createElement("span");
-                emojiBox.innerText = emoji;
-                emojiBox.style.fontSize = "2em";
-                emojiBox.style.margin = "2px";
-                rowDiv.appendChild(emojiBox);
-                let colorBox = document.createElement("div");
+                // Share button
+                let copyBtn = document.createElement("button");
+                copyBtn.innerText = "Share";
+                copyBtn.onclick = function () {
+                    // Copy emoji rows as text to clipboard
+                    let lines = [];
+                    for (let i = 0; i < window.guessResults.length; i++) {
+                        let rowArr = window.guessResults[i];
+                        let line = "";
+                        for (let j = 0; j < rowArr.length; j++) {
+                            let color = rowArr[j];
+                            if (color === "green") line += "🟩";
+                            else if (color === "yellow") line += "🟨";
+                            else line += "⬛";
+                        }
+                        lines.push(line);
+                    }
+                    let text = lines.join("\n");
+                    navigator.clipboard.writeText(text).then(() => {
+                        copyBtn.innerText = "Copied!";
+                        setTimeout(() => { copyBtn.innerText = "Share"; }, 1200);
+                    });
+                };
+                popup.appendChild(copyBtn);
+
+                // Close button
+                let closeBtn = document.createElement("button");
+                closeBtn.innerText = "Close";
+                closeBtn.style.marginTop = "10px";
+                closeBtn.onclick = function () {
+                    popup.style.display = "none";
+                };
+                popup.appendChild(closeBtn);
+
+                document.body.appendChild(popup);
+            } else {
+                popup.style.display = "flex";
             }
-            resultsDiv.appendChild(rowDiv);
         }
 
-    }
 }
-
 function update() {
     let guess = "";
     document.getElementById("answer").innerText = "";
@@ -230,7 +279,7 @@ function update() {
     for (let c = 0; c < width; c++) {
         let currTile = document.getElementById(row.toString() + '-' + c.toString());
         let letter = currTile.innerText;
-
+    
         //Is it in the correct position?
         if (word[c] == letter) {
             currTile.classList.add("correct");
@@ -248,48 +297,124 @@ function update() {
     if (correct == width) {
         // Store the result for this row BEFORE displaying results
         window.guessResults.push(rowResult);
+        document.getElementById("answer").innerText = "You win!";
+        gameOver = true;
+        document.getElementById('showShareBtn').onclick = function() {
+            document.getElementById('popup').style.display = 'flex';
+        };
 
-        document.getElementById("answer").innerText = "You win! \n Copy the results to share on The Guide!"; 
-        // Display guess results as colored rows under the game
-        let resultsDiv = document.getElementById("results-share");
-        if (!resultsDiv) {
-            resultsDiv = document.createElement("div");
-            resultsDiv.id = "results-share";
-            resultsDiv.style.marginTop = "20px";
-            resultsDiv.style.display = "flex";
-            resultsDiv.style.flexDirection = "column";
-            resultsDiv.style.alignItems = "center";
-            document.body.appendChild(resultsDiv);
-        }
-        resultsDiv.innerHTML = ""; // Clear previous results
+        document.getElementById('shareBtn').onclick = function() {
+            navigator.clipboard.writeText('results').then(function() {
+                document.getElementById('copiedMsg').style.display = 'block';
+                setTimeout(function() {
+                    document.getElementById('copiedMsg').style.display = 'none';
+                }, 1500);
+            });
+        };
 
-        // Show all completed rows
-        for (let i = 0; i < window.guessResults.length; i++) {
-            let rowArr = window.guessResults[i];
-            let rowDiv = document.createElement("div");
-            for (let j = 0; j < rowArr.length; j++) {
-                // Map color to emoji unicode
-                let color = rowArr[j];
-                let emoji;
-                if (color === "green") emoji = "🟩"; // unicode
-                else if (color === "yellow") emoji = "🟨"; // unicode
-                else emoji = "⬛"; // unicode
-
-                let emojiBox = document.createElement("span");
-                emojiBox.innerText = emoji;
-                emojiBox.style.fontSize = "2em";
-                emojiBox.style.margin = "2px";
-                rowDiv.appendChild(emojiBox);
-                let colorBox = document.createElement("div");
+        document.getElementById('popup').onclick = function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
             }
-            resultsDiv.appendChild(rowDiv);
+        };
+        let shareBtn = document.getElementById("show-share-btn");
+        if (!shareBtn) {
+            shareBtn = document.createElement("button");
+            shareBtn.id = "show-share-btn";
+            shareBtn.innerText = "Click me to share results";
+            shareBtn.className = "share-btn"; 
+            shareBtn.onclick = function () {
+                showSharePopup();
+            };
+            document.body.appendChild(shareBtn);
         }
+    }
+        //popup
+        function showSharePopup() {
+            let popup = document.getElementById("share-popup");
+            if (!popup) {
+                popup = document.createElement("div");
+                popup.id = "share-popup";
+                popup.classList.add("popup");
 
+                // Emoji results container
+                let emojiDiv = document.createElement("div");
+                emojiDiv.id = "emoji-results";
+                emojiDiv.style.marginBottom = "16px";
+                emojiDiv.style.textAlign = "center";
+                // Fill emojiDiv with results
+                for (let i = 0; i < window.guessResults.length; i++) {
+                    let rowArr = window.guessResults[i];
+                    let rowSpan = document.createElement("div");
+                    for (let j = 0; j < rowArr.length; j++) {
+                        let color = rowArr[j];
+                        let emoji;
+                        if (color === "green") emoji = "🟩";
+                        else if (color === "yellow") emoji = "🟨";
+                        else emoji = "⬛";
+                        let emojiBox = document.createElement("span");
+                        emojiBox.innerText = emoji;
+                        emojiBox.style.fontSize = "2em";
+                        emojiBox.style.margin = "2px";
+                        rowSpan.appendChild(emojiBox);
+                    }
+                    emojiDiv.appendChild(rowSpan);
+                }
+                let linkRow = document.createElement("div");
+                let linkText = document.createElement("span");
+                linkText.innerText = "Check out Snordle on the Guide: ";
+                let linkLink = document.createElement("a");
+                linkLink.href = "https://guide.snohetta.us/page/523/sn-rdle";
+                linkLink.innerText = "Snordle Guide";
+                linkRow.appendChild(linkText);
+                linkRow.appendChild(linkLink);
+                emojiDiv.appendChild(linkRow);
+                popup.appendChild(emojiDiv);
+
+                // Share button
+                let copyBtn = document.createElement("button");
+                copyBtn.innerText = "Share";
+                copyBtn.onclick = function () {
+                    // Copy emoji rows as text to clipboard
+                    let lines = [];
+                    for (let i = 0; i < window.guessResults.length; i++) {
+                        let rowArr = window.guessResults[i];
+                        let line = "";
+                        for (let j = 0; j < rowArr.length; j++) {
+                            let color = rowArr[j];
+                            if (color === "green") line += "🟩";
+                            else if (color === "yellow") line += "🟨";
+                            else line += "⬛";
+                        }
+                        lines.push(line);
+                    }
+                    lines.push("Check out Snordle on the Guide: https://guide.snohetta.us/page/523/sn-rdle");
+                    let text = lines.join("\n");
+                    navigator.clipboard.writeText(text).then(() => {  copyBtn.innerText = "Copied!";
+                        setTimeout(() => { copyBtn.innerText = "Share"; }, 1200);
+                    });
+                };
+                popup.appendChild(copyBtn);
+
+                // Close button
+                let closeBtn = document.createElement("button");
+                closeBtn.innerText = "Close";
+                closeBtn.style.marginTop = "10px";
+                closeBtn.onclick = function () {
+                    popup.style.display = "none";
+                };
+                popup.appendChild(closeBtn);
+
+                document.body.appendChild(popup);
+                            } 
+                            else {
+                                popup.style.display = "block"; 
+                        }  
+        
         gameOver = true;
         return; // Prevent pushing rowResult again at the end of update()
     }
-
-    //go again and mark which ones are present but in wrong position
+ //go again and mark which ones are present but in wrong position
     for (let c = 0; c < width; c++) {
         let currTile = document.getElementById(row.toString() + '-' + c.toString());
         let letter = currTile.innerText;
