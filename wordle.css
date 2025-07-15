@@ -30,6 +30,10 @@ hr {
   cursor: pointer;
 }
 
+.button:hover {
+  background-color: #5a8a54;
+}
+
 .instructions {
     font-size: 20px;
     margin: 20px;

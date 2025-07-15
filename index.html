@@ -1,7 +1,7 @@
 
 <html>
     <head>
-        <title>Wordle</title>
+        <title>Snørdle</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale = 1.0">
 
@@ -11,17 +11,33 @@
 
     <body>
         <br>
-        <h1 id="title">Snohetta's Wordle</h1>
-        <hr>
-
-        <p id="PermInstructions" >Snohetta Theme Words...Start typing to play</p>
-        <br>
-        <div id="board">
+        <!-- start in page -->
+        <div id="StartScreen">
+            <h1 id="title">Snohetta's Wordle</h1>
+            <hr>
+            <p id="PermInstructions">Snohetta Theme Words...Start typing to play</p>
+            <br>
+            <button id="front-page" type="button" class="button" onclick="OpenGame()">Play</button>
         </div>
-         <div id="results-share"></div>
-        
-        <br>
-        <h1 id="answer"></h1>
+        <!-- Game board and keyboard -->
+        <div id="game-screen" style="display:none;">
+            <h1 id="title">Snørdle!</h1>
+            <hr>
+            <div id="board"></div>
+            <div id="keyboard-row" style="display:none;"></div>
+            <div id="results-share"></div>
+            <br>
+            <h1 id="answer"></h1>
+        </div>
+
+        <script>
+            function OpenGame() {
+                document.getElementById('StartScreen').style.display = 'none';
+                document.getElementById('game-screen').style.display = 'block';
+                document.getElementById('keyboard-row').style.display = 'block';
+            }
+        </script>
+    </body>
         
        
 
