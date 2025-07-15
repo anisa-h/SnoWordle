@@ -9,34 +9,40 @@
         <script src="wordle.js"></script>
     </head>
 
-    <body>
-        <br>
-        <!-- start in page -->
-        <div id="StartScreen">
-            <h1 id="title">Snohetta's Wordle</h1>
+     <body>
+        <br> 
+        <h1 id="title">Snohetta's Wordle</h1>
             <hr>
-            <p id="PermInstructions">Snohetta Theme Words...Start typing to play</p>
+            <p id="PermenantInstructions">Snohetta Theme Words...Start typing to play</p>
             <br>
+        <div id="StartScreen">
+            
             <button id="front-page" type="button" class="button" onclick="OpenGame()">Play</button>
         </div>
-        <!-- Game board and keyboard -->
-        <div id="game-screen" style="display:none;">
-            <h1 id="title">Snørdle!</h1>
-            <hr>
-            <div id="board"></div>
-            <div id="keyboard-row" style="display:none;"></div>
-            <div id="results-share"></div>
+
+
+        <div id="Game" style="display:none;">
+            <div id="board">
+            </div>
+             <div id="result" style="display:none;"></div>
+    
+             <div id="results-share"></div>
+            
             <br>
-            <h1 id="answer"></h1>
+            
         </div>
 
-        <script>
-            function OpenGame() {
-                document.getElementById('StartScreen').style.display = 'none';
-                document.getElementById('game-screen').style.display = 'block';
-                document.getElementById('keyboard-row').style.display = 'block';
-            }
-        </script>
+        <div id="AutoShareResults">
+        <div class="popup">
+            <h2>Share</h2>
+            <button id="shareBtn">Share</button>
+            <div id="copiedMsg" style="display:none; color:green; margin-top:1em;">Copied!</div>
+        </div>
+    </div>
+        <h1 id="answer"></h1>
+
+
+
     </body>
         
        

@@ -22,15 +22,14 @@ guessList = guessList.concat(wordList);
 
 
 
+function OpenGame() {
+    document.getElementById('StartScreen').style.display = 'none';
+    document.getElementById('Game').style.display = 'block';
+            }
 
 window.onload = function(){
     intialize();
  }
-
-function OpenGame() {
-    document.getElementById('StartScreen').style.display = 'none';
-    document.getElementById('game-screen').style.display = 'block';
-}
 
 function intialize() {
 
@@ -59,6 +58,7 @@ function intialize() {
     keyboardContainer.id = "keyboard-row";
     keyboardContainer.classList.add("keyboard-row");
     keyboardContainer.style.display = "block";
+    
 
     for (let i = 0; i < keyboard.length; i++) {
         let currRow = keyboard[i];
@@ -93,7 +93,7 @@ function intialize() {
         }
         keyboardContainer.appendChild(keyboardRow);
     }
-    document.body.appendChild(keyboardContainer);
+    document.getElementById("Game").appendChild(keyboardContainer);
 
     // Listen for Key Press
     document.addEventListener("keyup", (e) => {
@@ -133,7 +133,59 @@ function processInput(e) {
 
     if (!gameOver && row == height) {
         gameOver = true;
+        document.getElementById('showShareBtn').onclick = function() {
+            document.getElementById('popup').style.display = 'flex';
+        };
+
+        document.getElementById('shareBtn').onclick = function() {
+            navigator.clipboard.writeText('results').then(function() {
+                document.getElementById('copiedMsg').style.display = 'block';
+                setTimeout(function() {
+                    document.getElementById('copiedMsg').style.display = 'none';
+                }, 1500);
+            });
+        };
+
+        document.getElementById('popup').onclick = function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        };
         document.getElementById("answer").innerText = word  + " was the word!";
+
+                let resultsDiv = document.getElementById("results-share");
+        if (!resultsDiv) {
+            resultsDiv = document.createElement("div");
+            resultsDiv.id = "results-share";
+            resultsDiv.style.marginTop = "20px";
+            resultsDiv.style.display = "flex";
+            resultsDiv.style.flexDirection = "column";
+            resultsDiv.style.alignItems = "center";
+            document.body.appendChild(resultsDiv);
+        }
+        resultsDiv.innerHTML = ""; // Clear previous results
+
+        // Show all completed rows
+        for (let i = 0; i < window.guessResults.length; i++) {
+            let rowArr = window.guessResults[i];
+            let rowDiv = document.createElement("div");
+            for (let j = 0; j < rowArr.length; j++) {
+                // Map color to emoji unicode
+                let color = rowArr[j];
+                let emoji;
+                if (color === "green") emoji = "🟩"; // unicode
+                else if (color === "yellow") emoji = "🟨"; // unicode
+                else emoji = "⬛"; // unicode
+
+                let emojiBox = document.createElement("span");
+                emojiBox.innerText = emoji;
+                emojiBox.style.fontSize = "2em";
+                emojiBox.style.margin = "2px";
+                rowDiv.appendChild(emojiBox);
+                let colorBox = document.createElement("div");
+            }
+            resultsDiv.appendChild(rowDiv);
+        }
 
     }
 }
