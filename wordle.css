@@ -16,7 +16,7 @@ hr {
     width: 100%;
     max-width: 500px;
     margin: 0 auto;
-    display: block;
+    display: block; 
     box-sizing: border-box;
     color: rgb(50, 48, 48);
 }
